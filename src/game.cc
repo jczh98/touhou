@@ -15,7 +15,13 @@ int Game::kScreenHeight = 480;
 
 Game::Game() :
     sdl_engine_(),
-    graphics_() {
+    graphics_(),
+    player_{std::make_shared<Player>(graphics_,
+                                     Vec<double>{
+                                         static_cast<double>(Game::kScreenWidth / 2),
+                                         static_cast<double>(Game::kScreenHeight / 2)}
+    )
+    } {
   RunEventLoop();
 }
 
@@ -42,6 +48,17 @@ void Game::RunEventLoop() {
       }
     }
     // Player movement
+    if (input.IsKeyHeld(SDL_SCANCODE_H)
+        && input.IsKeyHeld(SDL_SCANCODE_L)) {
+      // If both left and right keys are being pressed we need to stop
+      player_->StopMoving();
+    } else if (input.IsKeyHeld(SDL_SCANCODE_H)) {
+      player_->StartMovingLeft();
+    } else if (input.IsKeyHeld(SDL_SCANCODE_L)) {
+      player_->StartMovingRight();
+    } else {
+      player_->StopMoving();
+    }
 
     // Update scene and last updated time
     const auto current_time = std::chrono::high_resolution_clock::now();
@@ -66,9 +83,14 @@ void Game::RunEventLoop() {
 
 void Game::Update(const std::chrono::milliseconds elapsed_time, Graphics &graphics) {
   Timer::UpdateAll(elapsed_time);
+  player_->Update(elapsed_time);
 }
 
 void Game::Draw(Graphics &graphics) const {
   graphics.clear();
+
+  // Draw a frame
+  player_->Draw(graphics);
+
   graphics.flip();
 }

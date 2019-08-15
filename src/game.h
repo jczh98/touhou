@@ -12,6 +12,7 @@
 #include <SDL_image.h>
 #include "graphics.h"
 #include "sdl_engine.h"
+#include "player.h"
 struct Game {
   Game();
   ~Game();
@@ -26,5 +27,6 @@ struct Game {
   SDLEngine sdl_engine_;
   Graphics graphics_;
 
+  std::shared_ptr<Player> player_;
 };
 #endif //TOUHOU_GAME_H
