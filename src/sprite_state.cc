@@ -17,11 +17,3 @@ HorizontalFacing &operator++(HorizontalFacing &hf) {
   return hf;
 }
 
-VerticalFacing &operator++(VerticalFacing &vf) {
-  switch (vf) {
-    case VerticalFacing::UP : return vf = VerticalFacing::DOWN;
-    case VerticalFacing::DOWN: return vf = VerticalFacing::LAST;
-    case VerticalFacing::LAST: return vf = VerticalFacing::UP;
-  }
-  return vf;
-}

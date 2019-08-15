@@ -5,6 +5,7 @@
  * See COPYING for further information.
  */
 
+#include <iostream>
 #include "player.h"
 
 // Sprite
@@ -15,7 +16,9 @@ const int kPlayerHeight{48};
 Player::Player(Graphics &graphics, Vec<double> pos) :
     pos_{pos},
     horizontal_facing_{HorizontalFacing::VERTICAL},
+    vertical_facing_{VerticalFacing::STAY},
     current_frame_index_{0},
+    speed_{10.0},
     animation_(),
     sprites_() {
   InitializeSprites(graphics);
@@ -28,6 +31,20 @@ Player::~Player() {
 void Player::Update(const std::chrono::milliseconds elapsed_time) {
   sprites_[sprite_state()]->Update();
   animation_.Update();
+
+  // Update positions
+  if (horizontal_facing_ == HorizontalFacing::RIGHT) {
+    pos_.x += speed();
+  } else if (horizontal_facing_ == HorizontalFacing::LEFT) {
+    pos_.x -= speed();
+  }
+
+  if (vertical_facing_ == VerticalFacing::UP) {
+    pos_.y -= speed();
+  } else if (vertical_facing_ == VerticalFacing::DOWN) {
+    pos_.y += speed();
+  }
+
 }
 
 void Player::Draw(Graphics &graphics) const {
@@ -47,14 +64,15 @@ void Player::StopMovingHorizontal() {
 }
 
 void Player::StartMovingUp() {
-
+  vertical_facing_ = VerticalFacing::UP;
 }
 
 void Player::StartMovingDown() {
+  vertical_facing_ = VerticalFacing::DOWN;
 }
 
-void Player::StopMoving() {
-
+void Player::StopMovingVertical() {
+  vertical_facing_ = VerticalFacing::STAY;
 }
 
 void Player::StartFire() {
@@ -117,4 +135,8 @@ const Player::SpriteState Player::sprite_state() const {
       horizontal_facing_,
       animation_.current()
   );
+}
+
+const double Player::speed() const {
+  return speed_;
 }

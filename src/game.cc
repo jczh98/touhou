@@ -10,8 +10,8 @@
 
 const unsigned int kFps = 60;
 const auto kMaxFrameTime = std::chrono::milliseconds{5 * 1000 / 60};
-int Game::kScreenWidth = 640;
-int Game::kScreenHeight = 480;
+int Game::kScreenWidth = 1280;
+int Game::kScreenHeight = 960;
 
 Game::Game() :
     sdl_engine_(),
@@ -51,13 +51,25 @@ void Game::RunEventLoop() {
     if (input.IsKeyHeld(SDL_SCANCODE_H)
         && input.IsKeyHeld(SDL_SCANCODE_L)) {
       // If both left and right keys are being pressed we need to stop
-      player_->StopMoving();
+      player_->StopMovingHorizontal();
     } else if (input.IsKeyHeld(SDL_SCANCODE_H)) {
       player_->StartMovingLeft();
     } else if (input.IsKeyHeld(SDL_SCANCODE_L)) {
       player_->StartMovingRight();
     } else {
-      player_->StopMoving();
+      player_->StopMovingHorizontal();
+    }
+
+    if (input.IsKeyHeld(SDL_SCANCODE_J)
+    && input.IsKeyHeld(SDL_SCANCODE_K)) {
+      // Single or stay
+      player_->StopMovingVertical();
+    } else if (input.IsKeyHeld(SDL_SCANCODE_J)) {
+      player_->StartMovingDown();
+    } else if (input.IsKeyHeld(SDL_SCANCODE_K)) {
+      player_->StartMovingUp();
+    } else {
+      player_->StopMovingVertical();
     }
 
     // Update scene and last updated time

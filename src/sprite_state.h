@@ -21,10 +21,9 @@ HorizontalFacing &operator++(HorizontalFacing &hf);
 enum class VerticalFacing {
   FIRST,
   UP = FIRST,
+  STAY,
   DOWN,
   LAST
 };
-
-VerticalFacing &operator++(VerticalFacing &vf);
 
 #endif //TOUHOU_SRC_SPRITE_STATE_H_

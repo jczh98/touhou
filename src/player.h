@@ -27,12 +27,14 @@ struct Player {
   void StartMovingUp();
   void StartMovingDown();
   void StopMovingHorizontal();
-  void StopMoving();
+  void StopMovingVertical();
 
   void StartFire();
   void StopFire();
 
   const Vec<double> center_pos() const;
+  const double speed() const;
+
   static const int kAniNum{8};
 
  private:
@@ -71,6 +73,7 @@ struct Player {
   VerticalFacing vertical_facing_;
   Animation animation_;
   int current_frame_index_;
+  double speed_;
   Vec<double> pos_;
   std::map<SpriteState, std::unique_ptr<Sprite>> sprites_;
 };
